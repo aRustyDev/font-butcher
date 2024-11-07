@@ -1,0 +1,4 @@
+/target
+.env
+decrypted.pdf
+.DS_Store
