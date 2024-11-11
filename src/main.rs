@@ -1,23 +1,53 @@
-// use qpdf::QPdf;
-use std::env;
-// use crate::unstamp;
 mod pdf;
+mod utils;
+mod env;
+
+// use pdf_extract::*;
+
+// TODO: Implement TUI / CLI
+// TODO: Implement Logging
+// TODO: Implement Error Handling
+// TODO: Implement Loading Multiple PDFs
+// TODO: Implement Loading PDFs from a URL
+// TODO: Implement Loading PDFs from a directory
+// TODO: Implement Loading PDF strings to a database
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Get Config related ENV variables
-    let input_file = env::var("INPUT_FILE").expect("$INPUT_FILE is not set");
-    let b64pw = env::var("BASE64_PASSWORD").expect("$BASE64_PASSWORD is not set");
+    // [x] Get Config related ENV variables
+    let env_vars = env::get_env_vars()?;
 
-    // Open & decrypt the pdf
-    let pdf = pdf::load_pdf(&input_file, &b64pw)?;
+    // [x] Open & decrypt the pdf
+    match &env_vars["INPUT_FILE"] {
+        Some(pdf) => {
+            match &env_vars["BASE64_PASSWORD"] {
+                Some(b64) => {
+                    let pdf = pdf::load_pdf(&pdf, Some(&b64))?;
+                }
+                None => {
+                    let pdf = pdf::load_pdf(&pdf, None)?;
+                }
+            }
+        },
+        None => { // TODO: Handle missing env vars
+            println!("input_file: None");
+        }
+    }
 
-    // Remove Watermarks
-    // unstamp::unstamp(&pdf)?;
+    // [ ] Pull out text from PDF
+    // for page in pdf.iter() {
+    //     let out = extract_text_from_mem(&page).unwrap();
+    //     println!("pages extracted: {:?}", out);
+    // }
 
-    // Manage per page data -> DuckDB
+    // [ ] Remove Watermarks
 
-    // Write the finished pdf
-    pdf::write_pdf(&pdf, &input_file)?;
+    // [ ] Parse data into database -> DuckDB
+
+    // [ ] Parse data from database -> Markdown
+
+    // [ ] Parse data from database -> HTML
+
+    // [ ] Parse data from database -> Slides / sli.dev
 
     Ok(())
 }
