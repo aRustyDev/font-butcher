@@ -1,9 +1,22 @@
 [package]
 name = "font-butcher"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
+authors = ["Adam Smith <adam.smith@arusty.dev>"]
+description = "A tool to transform PDFs into data structures for further processing; it is a combination of a qpdf wrapper and a refactored version of pdf-unstamper by @hwding"
+license = "AGPL-3.0-or-later"
+homepage = "https://github.com/arusty/font-butcher"
+repository = "https://github.com/arusty/font-butcher"
+readme = "README.md"
+categories = ["command-line-utilities"]
+exclude = ["/ci", "/docker", "/docs", "/examples", "/tests", "/.github"]
 
 [dependencies]
 base64 = "0.22.1"
+crossterm = "0.28.1"
+lopdf = "0.34.0"
+pdf-extract = {version = "0.7.10", path = "../pdf-extract"} 
 qpdf = "0.3.1"
 qpdf-sys = "0.3.0"
+ratatui = "0.29.0"
+regex = "1.11.1"

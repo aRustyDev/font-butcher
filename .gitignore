@@ -1,4 +1,4 @@
 /target
 .env
-decrypted.pdf
+*.pdf
 .DS_Store

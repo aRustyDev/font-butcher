@@ -5,3 +5,18 @@
   - [ ] Table: Text
   - [ ] Table: Slides
   - [ ] Table: Book
+- [ ] Handle workflow more gracefully
+  - [ ] Implement Error Handling
+  - [ ] Handle missing env vars
+  - [ ] Implement TUI / CLI
+  - [ ] Implement logging
+- [ ] Decrypt in-place vs Decrypted Copy
+- [ ] Explore using "RemoveUnusedObjects"
+  - [ ] [qpdf: 1](https://github.com/qpdf/qpdf/issues/174)
+- [ ] Feature: Metadata Editing
+  - [ ] pdfinfo
+  - [ ] exiftool (https://github.com/kamadak/exif-rs)
+  - [ ] ghostscript
+  - [ ] IDEAS
+    - [ ] [StackExchange: 1](https://unix.stackexchange.com/questions/139809/discovering-metadata-about-a-pdf)
+    - [ ] [Tmux: 1](https://medium.com/@stevensaus/adding-functionality-to-a-pdf-metadata-editor-and-command-line-unicode-chooser-linux-bash-2f6b83dc4928)
