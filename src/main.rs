@@ -1,8 +1,11 @@
+// #![crate_name = "doc"]
+
 mod pdf;
 mod utils;
 mod env;
 
-// use pdf_extract::*;
+use pdf_extract::*;
+use lopdf::content::Content;
 
 // TODO: Implement TUI / CLI
 // TODO: Implement Logging
@@ -15,29 +18,37 @@ mod env;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // [x] Get Config related ENV variables
     let env_vars = env::get_env_vars()?;
+    // let mut pages = pdf::Pages::new();  
+    let bytes: Vec<u8>;
 
     // [x] Open & decrypt the pdf
     match &env_vars["INPUT_FILE"] {
         Some(pdf) => {
             match &env_vars["BASE64_PASSWORD"] {
                 Some(b64) => {
-                    let pdf = pdf::load_pdf(&pdf, Some(&b64))?;
+                    bytes = pdf::load_pdf(&pdf, Some(&b64))?;
                 }
                 None => {
-                    let pdf = pdf::load_pdf(&pdf, None)?;
+                    bytes = pdf::load_pdf(&pdf, None)?;
                 }
             }
         },
         None => { // TODO: Handle missing env vars
-            println!("input_file: None");
+            panic!("No input_file provided");
         }
     }
-
+    
     // [ ] Pull out text from PDF
-    // for page in pdf.iter() {
-    //     let out = extract_text_from_mem(&page).unwrap();
-    //     println!("pages extracted: {:?}", out);
-    // }
+    let mut md = pdf::Metadata::new(&bytes)?;
+    md.process_pdf()?;
+    md.strip_watermarks()?;
+
+    println!("pg count: {:?}", md.pages.len());
+    println!("pg2: {:?}", md.pages[1]);
+    md.bytes = &[];
+    md.pages = vec![];
+    println!("md: {:?}", md);
+
 
     // [ ] Remove Watermarks
 
@@ -51,4 +62,3 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-// <</Filter /Standard/V 4/R 4/Length 128/CF <</StdCF <</Length 16/CFM /AESV2/AuthEvent /DocOpen>>>>/StmF /StdCF/StrF /StdCF/EncryptMetadata false/O <606ab61777f1a51b49bd84a24b1557fbdfbbf94484b5c8748e00a42148d3eea5>/U <c1eda677def53da95608a60a9f6365bf28bf4e5e4e758a4164004e56fffa0108>/P -3904>>
